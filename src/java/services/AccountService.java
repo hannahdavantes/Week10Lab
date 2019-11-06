@@ -6,6 +6,8 @@
 package services;
 
 import dataaccess.UserDB;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import models.User;
 
 /**
@@ -25,6 +27,9 @@ public class AccountService {
         if (!user.getPassword().equals(password)) {
             return null;
         }
+        
+        Logger.getLogger(AccountService.class.getName())
+                .log(Level.INFO, "User logged in: {0}", email);
         
         return user;
     }

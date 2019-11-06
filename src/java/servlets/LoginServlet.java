@@ -51,11 +51,13 @@ public class LoginServlet extends HttpServlet {
 
         AccountService as = new AccountService();
         User user = null;
+
         try {
             user = as.login(email, password);
         } catch (Exception ex) {
-
+            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+
 
         if (user == null) {
             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
