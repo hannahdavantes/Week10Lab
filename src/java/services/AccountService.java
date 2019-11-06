@@ -6,6 +6,8 @@
 package services;
 
 import dataaccess.UserDB;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.User;
@@ -16,7 +18,7 @@ import models.User;
  */
 public class AccountService {
     
-    public User login(String email, String password) throws Exception {
+    public User login(String email, String password, String path) throws Exception {
         UserDB userDB = new UserDB();
         User user = userDB.getUser(email);
         
@@ -30,6 +32,18 @@ public class AccountService {
         
         Logger.getLogger(AccountService.class.getName())
                 .log(Level.INFO, "User logged in: {0}", email);
+        
+        //GmailService.sendMail(user.getEmail(), "Logged In",
+        //        "You have successfully logged into The Home Inventory Application.", false);
+        
+        String to = user.getEmail();
+        String subject = "Home Inventory - login";
+        String template = path + "/emailtemplates/login.html";
+        HashMap<String, String> tags = new HashMap<>();
+        tags.put("firstname", user.getFname());
+        tags.put("date", ((new Date()).toString()));
+        
+        GmailService.sendMail(to, subject, template, tags);
         
         return user;
     }

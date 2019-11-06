@@ -53,7 +53,7 @@ public class LoginServlet extends HttpServlet {
         User user = null;
 
         try {
-            user = as.login(email, password);
+            user = as.login(email, password, getServletContext().getRealPath("/WEB-INF"));
         } catch (Exception ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
