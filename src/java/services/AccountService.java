@@ -16,36 +16,62 @@ import models.User;
  *
  * @author awarsyle
  */
-public class AccountService {
-    
-    public User login(String email, String password, String path) throws Exception {
+public class AccountService
+  {
+
+    public User login(String email, String password, String path) throws Exception
+      {
         UserDB userDB = new UserDB();
         User user = userDB.getUser(email);
-        
-        if (user == null) {
+
+        if (user == null)
+          {
             return null;
-        }
-        
-        if (!user.getPassword().equals(password)) {
+          }
+
+        if (!user.getPassword().equals(password))
+          {
             return null;
-        }
-        
+          }
+
         Logger.getLogger(AccountService.class.getName())
                 .log(Level.INFO, "User logged in: {0}", email);
-        
+
         //GmailService.sendMail(user.getEmail(), "Logged In",
         //        "You have successfully logged into The Home Inventory Application.", false);
-        
         String to = user.getEmail();
         String subject = "Home Inventory - login";
         String template = path + "/emailtemplates/login.html";
         HashMap<String, String> tags = new HashMap<>();
         tags.put("firstname", user.getFname());
         tags.put("date", ((new Date()).toString()));
-        
+
         GmailService.sendMail(to, subject, template, tags);
-        
+
         return user;
-    }
-    
-}
+      }
+
+    public boolean forgotPassword(String email, String path) throws Exception
+      {
+        UserDB userDB = new UserDB();
+        User user = userDB.getUser(email);
+        if (user == null)
+          {
+            return false;
+          } else
+          {
+            String toAddress = user.getEmail();
+            String emailSubject = "Retrieve Password for Home Inventory";
+            String template = path + "/emailtemplates/forgotpassword.html";
+            HashMap<String, String> tags = new HashMap<>();
+
+            tags.put("firstname", user.getFname());
+            tags.put("lastname", user.getLname());
+            tags.put("email", user.getEmail());
+            tags.put("password", user.getPassword());
+
+            GmailService.sendMail(toAddress , emailSubject, template, tags);
+            return true;
+          }
+      }
+  }

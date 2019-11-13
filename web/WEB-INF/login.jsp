@@ -17,7 +17,7 @@
             email: <input type="text" name="email"><br>
             password: <input type="password" name="password"><br>
             <input type="submit" value="Login">
-            
+            <a href="/reset">Forgot password?</a>
         </form>
         
             
