@@ -16,10 +16,10 @@
         <form action="login" method="post">
             email: <input type="text" name="email"><br>
             password: <input type="password" name="password"><br>
-            <input type="submit" value="Login">
-            <a href="/reset">Forgot password?</a>
+            <input type="submit" value="Login"><br>
+            
         </form>
-        
+        <a href="/forgot">Forgot password?</a>
             
     </body>
 </html>

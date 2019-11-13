@@ -7,6 +7,8 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,9 +35,24 @@ public class ForgotPasswordServlet extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
       {
-        String email = request.getParameter("inputForgotEmail");
-        AccountService as = new AccountService();
-        
+        try
+          {
+            String email = request.getParameter("inputForgotEmail");
+            
+            if(email == null || email.equals(""))
+              {
+                getServletContext().getRequestDispatcher("/WEB-INF/forgot.jsp").forward(request, response);
+                return;
+              }
+            
+            AccountService as = new AccountService();
+            as.forgotPassword(email,  getServletContext().getRealPath("/WEB-INF"));
+            request.setAttribute("resetConfirmation", true);
+            getServletContext().getRequestDispatcher("/WEB-INF/forgot.jsp").forward(request, response);
+          } catch (Exception ex)
+          {
+            Logger.getLogger(ForgotPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
+          }
       }
 
   }
